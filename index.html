@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TiketRemi — Pilih Kartumu, Cetak Tiket Konsermu</title>
+<meta name="description" content="TiketRemi: setumpuk kartu konser fiktif. Pilih kartu, balik kartunya, cetak tiket bernomor. Semua jadwal dan harga adalah CONTOH.">
+<meta name="theme-color" content="#2b0f22">
+<meta property="og:title" content="TiketRemi — Pilih Kartumu, Cetak Tiket Konsermu">
+<meta property="og:description" content="16 konser fiktif dalam setumpuk kartu remi. Pilih, balik, cetak tiket. Semua harga CONTOH.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/TaiHeritagePro-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#meja">Lompat ke meja kartu</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <p class="brand"><span class="suit" aria-hidden="true">♥</span> TIKETREMI</p>
+  <nav aria-label="Kontrol meja">
+    <button id="motionToggle" type="button" aria-pressed="true">Gerak: nyala</button>
+    <button id="marqueeToggle" type="button" aria-pressed="true">Marquee: jalan</button>
+  </nav>
+</header>
+
+<main id="meja">
+  <!-- HERO: parallax 5 layer -->
+  <section class="hero" aria-labelledby="judul">
+    <div class="layer layer-felt" aria-hidden="true"></div>
+    <div class="layer layer-card-a" aria-hidden="true">A♥</div>
+    <div class="layer layer-card-b" aria-hidden="true">K♠</div>
+    <div class="layer layer-chip" aria-hidden="true">TR</div>
+    <div class="layer layer-stamp" aria-hidden="true">SAH</div>
+    <div class="hero-inner">
+      <p class="kicker">MEJA BANDAR · 16 KARTU · SEMUA HARGA CONTOH</p>
+      <h1 id="judul" class="split">PILIH KARTUMU, BOS.</h1>
+      <p class="lede">Bang Dealer sudah mengocok kartunya. Satu kartu = satu konser. Klik kartu, balik kartunya, cetak tiket bernomormu sendiri.</p>
+      <p class="lede kecil">Nama band, jadwal, dan harga di sini <strong>karangan</strong> — bukan konser beneran. Jangan transfer ke siapa pun atas nama TiketRemi.</p>
+      <div class="hero-aksi">
+        <a class="btn primer" href="#grid">LIHAT KARTU ↓</a>
+        <a class="btn" href="#riwayat">RIWAYAT TIKET</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE B -->
+  <div class="marquee band-a" aria-label="Pengumuman meja">
+    <div class="track" id="trackA"></div>
+  </div>
+  <div class="marquee band-b" aria-hidden="true">
+    <div class="track" id="trackB"></div>
+  </div>
+
+  <!-- FILTER = SETELAN MEJA -->
+  <section class="setelan" aria-labelledby="setelan-judul">
+    <h2 id="setelan-judul">Setelan meja</h2>
+    <form id="filterForm" class="filterbar">
+      <label>Kota
+        <select id="fKota">
+          <option value="">Semua kota</option>
+          <option>Jakarta</option><option>Bandung</option><option>Yogyakarta</option>
+          <option>Surabaya</option><option>Semarang</option><option>Medan</option>
+        </select>
+      </label>
+      <label>Genre
+        <select id="fGenre">
+          <option value="">Semua genre</option>
+          <option>Dangdut</option><option>Indie</option><option>Jazz</option><option>Rock</option>
+          <option>Pop</option><option>Folk</option><option>Blues</option><option>Metal</option><option>Reggae</option>
+        </select>
+      </label>
+      <label>Cari band / kota
+        <input id="fCari" type="search" placeholder="mis. Orkes, Jazz, Medan" autocomplete="off">
+      </label>
+      <label>Urutkan
+        <select id="fUrut">
+          <option value="tanggal">Tanggal terdekat</option>
+          <option value="murah">Harga termurah</option>
+          <option value="mahal">Harga termahal</option>
+        </select>
+      </label>
+      <button class="btn kecil" type="button" id="btnKocok">KOCOK ULANG</button>
+    </form>
+    <p class="status" id="statusGrid" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- GRID BENTO DIPOTONG -->
+  <section class="bento-wrap" aria-labelledby="grid-judul">
+    <h2 id="grid-judul" class="sr">Tumpukan kartu konser</h2>
+    <p id="loadingGrid" class="status" hidden>Mengocok kartu…</p>
+    <div id="grid" class="grid"></div>
+    <div id="emptyGrid" class="empty" hidden>
+      <p class="empty-big">MEJA LAGI KOSONG, BOS.</p>
+      <p>Ubah kota, genre, atau kata carinya — atau tekan KOCOK ULANG biar kartunya balik semua.</p>
+      <button class="btn primer" type="button" id="btnReset">BALIKIN SEMUA KARTU</button>
+    </div>
+  </section>
+
+  <!-- DETAIL: dibuka lewat clip-path lingkaran -->
+  <section id="detail" class="detail" hidden aria-labelledby="detail-judul">
+    <div class="detail-inner">
+      <div class="detail-head">
+        <h2 id="detail-judul">Kartu terpilih</h2>
+        <button class="btn kecil" type="button" id="btnTutupDetail">TUTUP ✕</button>
+      </div>
+      <div id="detailInfo"></div>
+      <fieldset class="kelas">
+        <legend>Pilih kelas (harga CONTOH)</legend>
+        <label><input type="radio" name="kelas" value="Reguler" checked> Reguler <span id="hReguler"></span></label>
+        <label><input type="radio" name="kelas" value="Festival"> Festival <span id="hFestival"></span></label>
+        <label><input type="radio" name="kelas" value="VIP"> VIP <span id="hVIP"></span></label>
+      </fieldset>
+      <div class="jumlah">
+        <label for="qty">Jumlah tiket (maks 8)</label>
+        <div class="stepper">
+          <button type="button" id="qtyMinus" aria-label="Kurangi jumlah">−</button>
+          <output id="qty" aria-live="polite">1</output>
+          <button type="button" id="qtyPlus" aria-label="Tambah jumlah">+</button>
+        </div>
+      </div>
+      <p class="total">TOTAL: <strong id="totalHarga">Rp0</strong></p>
+      <p class="error" id="detailError" role="alert" hidden></p>
+      <button class="btn primer besar" type="button" id="btnCetak">CETAK TIKET</button>
+      <div id="tiketOut" class="tiket" hidden></div>
+    </div>
+  </section>
+
+  <!-- RIWAYAT -->
+  <section id="riwayat" class="riwayat" aria-labelledby="riwayat-judul">
+    <h2 id="riwayat-judul">Riwayat tiketmu (tersimpan di HP ini saja)</h2>
+    <p class="kecil">Data hanya di localStorage browsermu, tidak dikirim ke mana pun. Bagikan lewat tautan di bawah kalau mau pamer kartu pilihanmu.</p>
+    <ul id="riwayatList" class="riwayat-list"></ul>
+    <p id="riwayatEmpty" class="status">Belum ada tiket tercetak. Pilih kartu dulu, Bos.</p>
+    <div class="riwayat-aksi">
+      <button class="btn" type="button" id="btnUnduhJSON">UNDUH JSON</button>
+      <button class="btn" type="button" id="btnHapusRiwayat">HAPUS RIWAYAT</button>
+    </div>
+  </section>
+
+  <!-- PENUTUP: zoom-out -->
+  <section class="penutup" id="penutup" aria-labelledby="penutup-judul">
+    <div class="penutup-inner">
+      <h2 id="penutup-judul">MEJA DITUTUP.</h2>
+      <p>Kartu sudah dibagi, tiket sudah dicetak. Besok Bang Dealer kocok lagi — dengan kartu yang sama, karena ini cuma contoh.</p>
+      <p class="kecil">TiketRemi hari ke-15 dari 30 Days of Code. Dibuat dengan kartu remi, felt gelap, dan grain kasar.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>TiketRemi — semua nama band, jadwal, venue, dan harga adalah <strong>CONTOH fiktif</strong>. Bukan penjualan tiket beneran.</p>
+  <p>Font OFL: Tai Heritage Pro, Alegreya Sans SC, Fugaz One (self-host). Ikon SVG digambar sendiri. Grain: filter feTurbulence.</p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
