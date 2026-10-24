@@ -1,0 +1,38 @@
+{
+  "seed": "2026-11-01",
+  "totalFontsInPool": 1958,
+  "domain": "tiket konser",
+  "layout": "bento asimetris dipotong",
+  "reference": "kartu remi",
+  "constraint": "grain/noise wajib",
+  "motion": {
+    "camera": "parallax 5 layer + zoom out di akhir",
+    "marquee": "marquee ikon SVG + teks",
+    "text": "variable font axis animasi",
+    "input": "tilt 3D pointer/gyro",
+    "reveal": "clip-path lingkaran"
+  },
+  "icons": {
+    "style": "outline tebal 3px sudut tajam",
+    "source": "Iconoir"
+  },
+  "fonts": {
+    "display": "Tai Heritage Pro",
+    "body": "Alegreya Sans SC",
+    "accent": "Fugaz One"
+  },
+  "palette": {
+    "mode": "dark",
+    "harmony": "monochrome",
+    "baseHue": 333,
+    "bg": "oklch(0.16 0.050 333)",
+    "surface": "oklch(0.21 0.040 333)",
+    "text": "oklch(0.94 0.020 333)",
+    "muted": "oklch(0.65 0.030 333)",
+    "accent": "oklch(0.61 0.236 333)",
+    "accent2": "oklch(0.57 0.170 333)",
+    "pop": "oklch(0.86 0.243 189)",
+    "note": "Draf. Wajib cek kontras AA dan rapikan lightness/chroma."
+  },
+  "buildDate": "2026-10-24"
+}

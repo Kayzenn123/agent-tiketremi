@@ -1,0 +1,1 @@
+Hari 15: TiketRemi — Bang Dealer sudah mengocok kartunya. Satu kartu = satu konser, klik kartunya, cetak tiket bernomormu. Semua harga CONTOH, jangan transfer ke siapa pun! #30DaysOfCode #TiketRemi #WebDevIndonesia
